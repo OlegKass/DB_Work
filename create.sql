@@ -59,14 +59,13 @@ ALTER TABLE death_country ADD CONSTRAINT death_country_pk PRIMARY KEY ( death_co
 
 CREATE TABLE laureat (
     lareat_id    NUMBER(2) NOT NULL,
-    full_name    CHAR 
---  WARNING: CHAR size not specified 
-     NOT NULL,
+    full_name    CHAR(14) NOT NULL,
     sex          CHAR(2),
     birth_date   DATE NOT NULL,
     death_date   DATE NOT NULL,
     org_name     CHAR(14) NOT NULL,
-    category     CHAR(14) NOT NULL
+    category     CHAR(14) NOT NULL,
+    year         NUMBER(2)
 )
 
 logging;
