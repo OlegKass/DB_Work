@@ -58,19 +58,20 @@ logging;
 ALTER TABLE death_country ADD CONSTRAINT death_country_pk PRIMARY KEY ( death_country );
 
 CREATE TABLE laureat (
-    lareat_id    NUMBER(2) NOT NULL,
+    laureat_id   NUMBER(2) NOT NULL,
     full_name    CHAR(14) NOT NULL,
     sex          CHAR(2),
     birth_date   DATE NOT NULL,
     death_date   DATE NOT NULL,
     org_name     CHAR(14) NOT NULL,
     category     CHAR(14) NOT NULL,
-    year         NUMBER(2)
+    year         NUMBER(2),
+    motivation   CHAR(14)
 )
 
 logging;
 
-ALTER TABLE laureat ADD CONSTRAINT laureat_pk PRIMARY KEY ( lareat_id );
+ALTER TABLE laureat ADD CONSTRAINT laureat_pk PRIMARY KEY ( laureat_id );
 
 CREATE TABLE org_city (
     org_city      CHAR(14) NOT NULL,
@@ -90,14 +91,14 @@ logging;
 ALTER TABLE org_country ADD CONSTRAINT org_country_pk PRIMARY KEY ( org_country );
 
 CREATE TABLE org_name (
-    laureatid   NUMBER(2) NOT NULL,
-    org_name    CHAR(14) NOT NULL,
-    org_city    CHAR(14) NOT NULL
+    laureat_id   NUMBER(2) NOT NULL,
+    org_name     CHAR(14) NOT NULL,
+    org_city     CHAR(14) NOT NULL
 )
 
 logging;
 
-ALTER TABLE org_name ADD CONSTRAINT org_name_pk PRIMARY KEY ( laureatid,
+ALTER TABLE org_name ADD CONSTRAINT org_name_pk PRIMARY KEY ( laureat_id,
                                                               org_name );
 
 ALTER TABLE birth
@@ -136,9 +137,9 @@ ALTER TABLE laureat
     NOT DEFERRABLE;
 
 ALTER TABLE laureat
-    ADD CONSTRAINT laureat_org_name_fk FOREIGN KEY ( lareat_id,
+    ADD CONSTRAINT laureat_org_name_fk FOREIGN KEY ( laureat_id,
                                                      org_name )
-        REFERENCES org_name ( laureatid,
+        REFERENCES org_name ( laureat_id,
                               org_name )
     NOT DEFERRABLE;
 
