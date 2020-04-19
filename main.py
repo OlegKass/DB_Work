@@ -16,10 +16,10 @@ Group By category_name
 
 print('Запит 1')
 cursor.execute(query)
-row = cursor.fetchone()
-while row:
+for row in cursor:
     print(row)
-    row = cursor.fetchone()
+
+
 print('\n\n')
 
 # Запит 2 - Країна народження - відсоток лауреатів цієї країни відносно решти.
@@ -35,10 +35,8 @@ GROUP BY birth_country_name
 
 print('Запит 2')
 cursor.execute(query)
-row = cursor.fetchone()
-while row:
+for row in cursor:
     print(row)
-    row = cursor.fetchone()
 print('\n\n')
 
 # Запит 3 -  Динаміка кількості лауреатів по годах.
@@ -50,10 +48,8 @@ Group by reward_year
 
 print('Запит 3')
 cursor.execute(query)
-row = cursor.fetchone()
-while row:
-    print (row)
-    row = cursor.fetchone()
+for row in cursor:
+    print(row)
 
 cursor.close()
 connection.close()
