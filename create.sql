@@ -1,154 +1,65 @@
-CREATE TABLE birth (
-    birth_data   DATE NOT NULL,
-    birth_city   CHAR(14) NOT NULL
-)
-LOGGING;
+CREATE TABLE Org_countries(
+    Org_country_name VARCHAR(63) NOT NULL PRIMARY KEY
+    );
 
-ALTER TABLE birth ADD CONSTRAINT birth_pk PRIMARY KEY ( birth_data );
+CREATE  TABLE Org_city(
+    Org_city_name VARCHAR(63) NOT NULL PRIMARY KEY,
+    Org_country_name VARCHAR(63) NOT NULL,
+    constraint fk_Org_city FOREIGN KEY (Org_country_name) REFERENCES Org_countries(Org_country_name)
+    ); 
+    
+ CREATE TABLE Organization(
+    Org_name VARCHAR(63) NOT NULL PRIMARY KEY ,
+    Org_city_name VARCHAR(63) NOT NULL,
+    constraint fk_Organization FOREIGN KEY (Org_city_name) REFERENCES Org_city(Org_city_name)
+    );
 
-CREATE TABLE birth_city (
-    birth_city      CHAR(14) NOT NULL,
-    birth_country   CHAR(14) NOT NULL
-)
+CREATE TABLE Birth_country(
+    Birth_country_name VARCHAR(63) NOT NULL PRIMARY KEY
+    );
+    
+CREATE TABLE Birth_city(
+    Birth_city_name VARCHAR(63) NOT NULL PRIMARY KEY,
+    Birth_country_name VARCHAR(63) NOT NULL,
+    Constraint fk_Birth_city FOREIGN KEY (Birth_country_name) REFERENCES Birth_country(Birth_country_name)
+    );   
 
-logging;
+Create Table Birth(
+    Birth_date Date NOT NULL PRIMARY KEY,
+    Birth_city_name VARCHAR(63) NOT NULL,
+    constraint fk_Birth FOREIGN KEY (Birth_city_name)REFERENCES Birth_city(Birth_city_name)
+);
 
-ALTER TABLE birth_city ADD CONSTRAINT birth_city_pk PRIMARY KEY ( birth_city );
+CREATE TABLE Death_country(
+    Death_country_name VARCHAR(63) NOT NULL PRIMARY KEY
+    );
+    
+CREATE TABLE Death_city (
+    Death_city_name VARCHAR(63) NOT NULL PRIMARY KEY,
+    Death_country_name VARCHAR(63) NOT NULL,
+    constraint fk_Death_city FOREIGN KEY (Death_country_name) REFERENCES Death_country(Death_country_name)
+    );   
 
-CREATE TABLE birth_country (
-    birth_country CHAR(14) NOT NULL
-)
+Create Table Death(
+    Death_date Date NOT NULL PRIMARY KEY ,
+    Death_city_name VARCHAR(63) NOT NULL ,
+    constraint fk_Death FOREIGN KEY (Death_city_name) REFERENCES Death_city(Death_city_name)
+);
 
-logging;
+CREATE TABLE Categories(
+    Category_name VARCHAR(63) NOT NULL PRIMARY KEY
+    );
+    
+    
+Create Table Laureat(
+    Laureat_id NUMBER(20) NOT NULL PRIMARY KEY,
+    Full_name VARCHAR(63) NOT NULL,
+    Sex VARCHAR(14) NOT NULL,
+    Reward_year NUMBER(38) NOT NULL,
+    Motivation Clob NOT NULL ,
+    Birth_date Date NOT NULL REFERENCES Birth(Birth_date) ,
+    Death_date Date NOT NULL REFERENCES Death(Death_date) ,
+    Org_name VARCHAR(63) NOT NULL REFERENCES Organization(Org_name),
+    Category_name VARCHAR(63) NOT NULL REFERENCES Categories(Category_name) 
+);
 
-ALTER TABLE birth_country ADD CONSTRAINT birth_country_pk PRIMARY KEY ( birth_country );
-
-CREATE TABLE category (
-    category CHAR(14) NOT NULL
-)
-
-logging;
-
-ALTER TABLE category ADD CONSTRAINT category_pk PRIMARY KEY ( category );
-
-CREATE TABLE death (
-    death_date   DATE NOT NULL,
-    death_city   CHAR(14) NOT NULL
-)
-
-logging;
-
-ALTER TABLE death ADD CONSTRAINT death_pk PRIMARY KEY ( death_date );
-
-CREATE TABLE death_city (
-    death_city      CHAR(14) NOT NULL,
-    death_country   CHAR(14) NOT NULL
-)
-
-logging;
-
-ALTER TABLE death_city ADD CONSTRAINT death_city_pk PRIMARY KEY ( death_city );
-
-CREATE TABLE death_country (
-    death_country CHAR(14) NOT NULL
-)
-
-logging;
-
-ALTER TABLE death_country ADD CONSTRAINT death_country_pk PRIMARY KEY ( death_country );
-
-CREATE TABLE laureat (
-    laureat_id   NUMBER(2) NOT NULL,
-    full_name    CHAR(14) NOT NULL,
-    sex          CHAR(2),
-    birth_date   DATE NOT NULL,
-    death_date   DATE NOT NULL,
-    org_name     CHAR(14) NOT NULL,
-    category     CHAR(14) NOT NULL,
-    year         NUMBER(2),
-    motivation   CHAR(14)
-)
-
-logging;
-
-ALTER TABLE laureat ADD CONSTRAINT laureat_pk PRIMARY KEY ( laureat_id );
-
-CREATE TABLE org_city (
-    org_city      CHAR(14) NOT NULL,
-    org_country   CHAR(14) NOT NULL
-)
-
-logging;
-
-ALTER TABLE org_city ADD CONSTRAINT org_city_pk PRIMARY KEY ( org_city );
-
-CREATE TABLE org_country (
-    org_country CHAR(14) NOT NULL
-)
-
-logging;
-
-ALTER TABLE org_country ADD CONSTRAINT org_country_pk PRIMARY KEY ( org_country );
-
-CREATE TABLE org_name (
-    laureat_id   NUMBER(2) NOT NULL,
-    org_name     CHAR(14) NOT NULL,
-    org_city     CHAR(14) NOT NULL
-)
-
-logging;
-
-ALTER TABLE org_name ADD CONSTRAINT org_name_pk PRIMARY KEY ( laureat_id,
-                                                              org_name );
-
-ALTER TABLE birth
-    ADD CONSTRAINT birth_birth_city_fk FOREIGN KEY ( birth_city )
-        REFERENCES birth_city ( birth_city )
-    NOT DEFERRABLE;
-
-ALTER TABLE birth_city
-    ADD CONSTRAINT birth_city_birth_country_fk FOREIGN KEY ( birth_country )
-        REFERENCES birth_country ( birth_country )
-    NOT DEFERRABLE;
-
-ALTER TABLE death_city
-    ADD CONSTRAINT death_city_death_country_fk FOREIGN KEY ( death_country )
-        REFERENCES death_country ( death_country )
-    NOT DEFERRABLE;
-
-ALTER TABLE death
-    ADD CONSTRAINT death_death_city_fk FOREIGN KEY ( death_city )
-        REFERENCES death_city ( death_city )
-    NOT DEFERRABLE;
-
-ALTER TABLE laureat
-    ADD CONSTRAINT laureat_birth_fk FOREIGN KEY ( birth_date )
-        REFERENCES birth ( birth_data )
-    NOT DEFERRABLE;
-
-ALTER TABLE laureat
-    ADD CONSTRAINT laureat_category_fk FOREIGN KEY ( category )
-        REFERENCES category ( category )
-    NOT DEFERRABLE;
-
-ALTER TABLE laureat
-    ADD CONSTRAINT laureat_death_fk FOREIGN KEY ( death_date )
-        REFERENCES death ( death_date )
-    NOT DEFERRABLE;
-
-ALTER TABLE laureat
-    ADD CONSTRAINT laureat_org_name_fk FOREIGN KEY ( laureat_id,
-                                                     org_name )
-        REFERENCES org_name ( laureat_id,
-                              org_name )
-    NOT DEFERRABLE;
-
-ALTER TABLE org_city
-    ADD CONSTRAINT org_city_org_country_fk FOREIGN KEY ( org_country )
-        REFERENCES org_country ( org_country )
-    NOT DEFERRABLE;
-
-ALTER TABLE org_name
-    ADD CONSTRAINT org_name_org_city_fk FOREIGN KEY ( org_city )
-        REFERENCES org_city ( org_city )
-    NOT DEFERRABLE;
