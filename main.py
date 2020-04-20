@@ -10,7 +10,8 @@ cursor = connection.cursor()
 # Запит 1 - Категорія(предметна область) - число. Вивести категорію та кількість лауретів цієї області.
 query = '''
 Select category_name, count(*)
-From categories
+From categories inner join 
+Laureat USING(category_name)
 Group By category_name
 '''
 
