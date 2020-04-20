@@ -18,7 +18,8 @@ cursor = connection.cursor()
 
 query = """
 Select category_name, count(*)
-From categories
+From categories inner join 
+Laureat USING(category_name)
 Group By category_name
 """
 cursor.execute(query)
