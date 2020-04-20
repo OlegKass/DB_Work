@@ -1,6 +1,7 @@
 -- 1 ?????
 Select category_name, count(*)
-From categories
+From categories inner join 
+Laureat USING(category_name)
 Group By category_name
 -- 2 ?????
 SELECT birth_country_name AS event, ROUND(COUNT(birth_country_name) * 100 / (SELECT COUNT(*) FROM Laureat), 2)
