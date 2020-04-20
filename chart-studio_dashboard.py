@@ -64,7 +64,11 @@ y = list()
 for row in cursor:
     x.append(row[0])
     y.append(row[1])
-scatter = go.Scatter(x = x, y = y)
+
+x.sort()
+y.sort()
+print(x,y)
+scatter = go.Scatter(x = x, y = y, mode="lines+markers")
 scatter = py.plot([scatter],auto_open = True)
 
 dash = dashboard.Dashboard()
